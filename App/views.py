@@ -1,9 +1,10 @@
 import pandas as pd
 import json
+import numpy as np
 from django.http import HttpResponse, JsonResponse
 import os
 dirname = os.path.dirname(__file__)
-MPG_DATASET_ABSOLUTE_PATH = os.path.join(dirname, 'autodata-mpg.csv')
+MPG_DATASET_ABSOLUTE_PATH = os.path.join(dirname, 'autoMPGFinal.csv')
 SALES_DATASET_ABSOLUTE_PATH = os.path.join(dirname, 'Car_data.csv')
 AUTO_MARKET_SHARE_DATA_ABSOLUTE_PATH = os.path.join(dirname, 'AutoMarketShare.csv')
 CARS_MONTHLY_SALES_DATA_ABSOLUTE_PATH = os.path.join(dirname, 'Car sales by month.csv')
@@ -45,8 +46,22 @@ def queryTwo(request):
 def FilteredCars(request, manufacturer, fuelType, transmission, orderBy, year, mileageKML, engineCC, power, seats, price, numberOfRecords):
     if request.method == 'GET':
         autoMPG = pd.read_csv(MPG_DATASET_ABSOLUTE_PATH)
-        # Removing Duplicates from CSV Data by NAME column
-        autoMPG = autoMPG.drop_duplicates(subset=['Name'], keep='first', inplace=False, ignore_index=False)
+        # Adding AverageYearlySales Column to tell most popular car specification
+        # Interquantile range calculated from sales data set to make random sales more relevant
+            # iqr1 = df.quantile(0.25)
+            # iqr2 = df.quantile(0.75)
+            # iqr = iqr2 - iqr1
+        #     => range = [iqr1,iqr]
+        # adding sales column
+        # iqr1 = 200000 approx and iqr = 800000
+        # autoMPG['AverageYearlySales'] = np.random.randint(200000, 800000, autoMPG.shape[0])
+        # using data set which already added random sales data for performance
+
+        # # Removing Duplicates from CSV Data by NAME column
+        # autoMPG = autoMPG.drop_duplicates(subset=['Name'], keep='first', inplace=False, ignore_index=False)
+        # using data set which already added random sales data for performance
+
+
         # Manufacturer Filter
         if(manufacturer != 'All'):
             autoMPG = autoMPG[(autoMPG['Manufacturer'] == manufacturer)]
