@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-&%1$k&dg)2)q0pw70-l7^pk1p5+j27m8!5)m*%fk$68z0q3e-=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost','engage-autoapi.herokuapp.com']
 
 
 # Application definition
