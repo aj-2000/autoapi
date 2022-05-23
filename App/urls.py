@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import queryOne, queryTwo, queryThree, queryFour, queryFive, querySix, querySeven, FilteredCars,apiHome
+from .views import queryOne, queryTwo, queryThree, queryFour, queryFive, querySix, querySeven, FilteredCars,apiHome, overview
 # queryThree, queryFour, queryFive, querySix, querySeven, apiHome
 urlpatterns = [
     path('q1/<int:option>/', queryOne),
@@ -11,5 +11,6 @@ urlpatterns = [
     path('q5/', queryFive),
     path('q6/<int:option>', querySix),
     path('q7/<int:option>', querySeven),
+    path('overview/',overview),
     path('', apiHome)
 ]

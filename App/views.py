@@ -8,6 +8,7 @@ SALES_DATASET_ABSOLUTE_PATH = os.path.join(dirname, 'Car_data.csv')
 AUTO_MARKET_SHARE_DATA_ABSOLUTE_PATH = os.path.join(dirname, 'AutoMarketShare.csv')
 CARS_MONTHLY_SALES_DATA_ABSOLUTE_PATH = os.path.join(dirname, 'Car sales by month.csv')
 CARS_DATA_ABSOLUTE_PATH = os.path.join(dirname, 'autodata-cars.csv')
+CARS_YEARLY_SALES_ABSOLUTE_PATH = os.path.join(dirname, 'car_sales_year.csv')
 # Processed Data
 # MPG_DATASET_PROCESSED_ABSOLUTE_PATH = os.path.join(dirname, 'autodata-mpg.csv')
 
@@ -131,9 +132,10 @@ def queryFour(request):
         Top_5 = sale.nlargest(5,['Percent Change'])
         Bottom_5 = sale.nsmallest(5, ['Percent Change'])
         frames = [Top_5, Bottom_5]
+        print(frames)
         top = pd.concat(frames)
         top = top.drop(['Total sales', '2020 sales', '2019 sales'], axis=1)
-        jsonData = top.sort_values(by='Percent Change', ascending=True).to_json(orient='columns')
+        jsonData = top.sort_values(by='Percent Change', ascending=True).to_json(orient='records')
         return JsonResponse(jsonData,safe=False)
     else:
         html = "<html><body>Only GET Method Allowed.</body></html>"
@@ -278,6 +280,20 @@ def querySeven(request,option):
             jsonData = json.dumps(bestMonthsList)
 
         return JsonResponse(jsonData,safe=False)
+    else:
+        html = "<html><body>Only GET Method Allowed.</body></html>"
+        return HttpResponse(html)
+
+def overview(request):
+    if request.method == 'GET':
+        df_sales = pd.read_csv(CARS_YEARLY_SALES_ABSOLUTE_PATH)
+        dataDict = {
+            'sales': df_sales.sum()[2:].to_json(),
+            'top_brand_of_year': df_sales.sort_values(by='2022', ascending=False).head(1)['Make'].item(),
+            'top_brand_of_month': df_sales.sort_values(by='June_2022', ascending=False).head(1)['Make'].item()
+        }
+        jsonData = json.dumps(dataDict)
+        return JsonResponse(jsonData, safe=False)
     else:
         html = "<html><body>Only GET Method Allowed.</body></html>"
         return HttpResponse(html)
