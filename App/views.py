@@ -12,6 +12,12 @@ CARS_DATA_ABSOLUTE_PATH = os.path.join(dirname, 'autodata-cars.csv')
 CARS_YEARLY_SALES_ABSOLUTE_PATH = os.path.join(dirname, 'car_sales_year.csv')
 TOTAL_CAR_SALES_ABSOLUTE_PATH = os.path.join(dirname, 'Total_Car_Sales.csv')
 PRODUCTION_OF_VEHICLES_DATA_ABSOLUTE_PATH = os.path.join(dirname, 'productionOfVehicles.csv')
+TOP_COUNTRIES_DATA_ABSOLUTE_DATA = os.path.join(dirname, 'top_countries.csv')
+AUTOMAKERS_BY_EARNING_ABSOLUTE_PATH = os.path.join(dirname, 'automakers_by_earning.csv')
+AUTOMAKERS_BY_EMPLOYEES_ABSOLUTE_PATH = os.path.join(dirname, 'automakers_by_employees.csv')
+AUTOMAKERS_BY_MARKET_CAPITALIZATION_ABSOLUTE_PATH = os.path.join(dirname, 'automakers_by_market_capitalization.csv')
+AUTOMAKERS_BY_REVENUE_ABSOLUTE_PATH = os.path.join(dirname, 'automakers_by_revenue.csv')
+
 # Processed Data
 # MPG_DATASET_PROCESSED_ABSOLUTE_PATH = os.path.join(dirname, 'autodata-mpg.csv')
 
@@ -22,7 +28,7 @@ def queryOne(request, option):
     if request.method == 'GET':
         autoMPG = pd.read_csv(MPG_DATASET_ABSOLUTE_PATH)
         if option == 1:
-            jsonData = autoMPG[autoMPG['Transmission']=='Automatic'][['Price','Mileage Km/L']].head(500).to_json(orient='columns')
+            jsonData = autoMPG[autoMPG['Transmission']=='Automatic'][['Price','Mileage Km/L']].head(1).to_json(orient='columns')
         elif option == 2:
             jsonData = autoMPG[autoMPG['Transmission']=='Manual'][['Price','Mileage Km/L']].head(500).to_json(orient='columns')
         else:
@@ -159,14 +165,18 @@ def queryFour(request):
         return HttpResponse(html)
 
 #
-def queryFive(request):
+def queryFive(request, option):
 
     if request.method == 'GET':
-        # Use absolute path only
-
-        df = pd.read_csv(AUTO_MARKET_SHARE_DATA_ABSOLUTE_PATH)
-
-        jsonData = df.head(6).sort_values(by='Percent Change', ascending=False).to_json(orient='columns')
+        df = pd.read_csv(TOP_COUNTRIES_DATA_ABSOLUTE_DATA)
+        if(option<=2 and option>=0):
+            # selecting top 5 requested columns
+            df = df.iloc[:5, [0, option + 1]]
+            df = df.sort_values(by=df.columns[1], ascending=False)
+            jsonData = df.to_json(orient='columns')
+        else:
+            html = "<html><body>Incorrect URL</body></html>"
+            return HttpResponse(html)
         return JsonResponse(jsonData,safe=False)
     else:
         html = "<html><body>Only GET Method Allowed.</body></html>"
@@ -184,6 +194,7 @@ def querySix(request, option):
         elif(option==1):
             df =  pd.read_csv(MPG_DATASET_ABSOLUTE_PATH)
             df = df.groupby(['Transmission'])['Name'].count()
+            df = (100. * df / df.sum()).round(1)
             jsonData = df.to_json(orient="columns")
         elif(option==2):
             df = pd.read_csv(CARS_MONTHLY_SALES_DATA_ABSOLUTE_PATH)
@@ -193,6 +204,7 @@ def querySix(request, option):
             df[df.columns[2:]] = df[df.columns[2:]].apply(pd.to_numeric)
             df['Sales'] = df.iloc[:, 0:].sum(axis=1)
             df = df.groupby(by='Segment')['Sales'].sum()
+            df = (100. * df / df.sum()).round(1)
             jsonData = df.to_json(orient="columns")
         elif(option==3):
             df= pd.read_csv(SALES_DATASET_ABSOLUTE_PATH)
@@ -203,12 +215,13 @@ def querySix(request, option):
         elif(option==4):
             df = pd.read_csv(MPG_DATASET_ABSOLUTE_PATH)
             df = df.groupby(['Fuel_Type'])['Name'].count()
+            df = (100. * df / df.sum()).round(1)
             jsonData = df.to_json(orient="columns")
         elif(option==5):
             df = pd.read_csv(CARS_DATA_ABSOLUTE_PATH)
             df = df.groupby(by="Body_Type")['Unnamed: 0'].count().sort_values(ascending=False)[0:9]
-            print(df)
-            jsonData = df.to_json(orient="columns")
+            df = (100. * df / df.sum()).round(1)
+
 
         else:
             html = "<html><body>Incorrect URL</body></html>"
@@ -338,6 +351,34 @@ def queryEight(request):
 def queryNine(request):
     if request.method == 'GET':
         df = pd.read_csv(TOTAL_CAR_SALES_ABSOLUTE_PATH)
+        jsonData = df.to_json(orient="columns");
+        return JsonResponse(jsonData, safe=False)
+    else:
+        html = "<html><body>Only GET Method Allowed.</body></html>"
+        return HttpResponse(html)
+
+def queryTen(request, option):
+    if request.method == 'GET':
+        if(option==0):
+            df = pd.read_csv(AUTOMAKERS_BY_EARNING_ABSOLUTE_PATH)
+            df['earnings_ttm'] = df['earnings_ttm']/1000000000
+            df = df.iloc[0:10, [1,3]]
+
+        elif(option==1):
+            df = pd.read_csv(AUTOMAKERS_BY_REVENUE_ABSOLUTE_PATH)
+            df['revenue_ttm'] = df['revenue_ttm']/1000000000
+            df = df.iloc[0:10, [1,3]]
+        elif(option==2):
+            df = pd.read_csv(AUTOMAKERS_BY_MARKET_CAPITALIZATION_ABSOLUTE_PATH)
+            df['marketcap'] = df['marketcap'] / 1000000000
+            df = df.iloc[0:10, [1, 3]]
+        elif(option==3):
+            df = pd.read_csv(AUTOMAKERS_BY_EMPLOYEES_ABSOLUTE_PATH)
+            df = df.iloc[0:10, [1,3]]
+        else:
+            html = "<html><body>Incorrect URL</body></html>"
+            return HttpResponse(html)
+        df = df.round()
         jsonData = df.to_json(orient="columns");
         return JsonResponse(jsonData, safe=False)
     else:
