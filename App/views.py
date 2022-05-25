@@ -9,6 +9,7 @@ from statsmodels.tsa.stattools import acf, pacf
 from statsmodels.tsa.arima.model import ARIMA
 from sklearn.metrics import mean_squared_error,mean_absolute_percentage_error
 from rest_framework.decorators import api_view
+from rest_framework import status
 from rest_framework.parsers import JSONParser
 
 dirname = os.path.dirname(__file__)
@@ -454,6 +455,8 @@ def forecastSales(request,p=1,q=1,steps=5, nlags=9):
         # # ignoring first record
         predictions = np.exp(results_ARIMA.predict())[1:]
         actual = np.exp(indexedDataset['sales'])[1:]
+        predictions = predictions.round()
+        actual = actual.round()
         # # error calculation
         # root mean squared error
         rmse = np.sqrt(mean_squared_error(actual, predictions))
@@ -468,15 +471,16 @@ def forecastSales(request,p=1,q=1,steps=5, nlags=9):
         # converting bool to str
         isStationaryStr = str(isStationary)
         dataDict = {
-            "RSA":RSA_VALUE,
+            "RSS":RSA_VALUE,
             "RMSE": rmse,
             "MAPE": mape,
             "FORECAST": forecast.to_json(),
             "IS_STATIONARY": isStationaryStr,
-
+            "ACTUAL":actual.to_json(),
+            "PREDICTED":predictions.to_json(),
         }
         jsonData = json.dumps(dataDict)
-        return JsonResponse(jsonData, safe=False)
+        return JsonResponse(jsonData, safe=False, status=status.HTTP_308_PERMANENT_REDIRECT)
     else:
         return Response(request.data)
 @api_view(['GET', 'POST'])
