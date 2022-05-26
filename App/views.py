@@ -10,24 +10,22 @@ from statsmodels.tsa.arima.model import ARIMA
 from sklearn.metrics import mean_squared_error,mean_absolute_percentage_error
 from rest_framework.decorators import api_view
 from rest_framework import status
-from rest_framework.parsers import JSONParser
 
 dirname = os.path.dirname(__file__)
-MPG_DATASET_ABSOLUTE_PATH = os.path.join(dirname, 'autoMPGFinal.csv')
-SALES_DATASET_ABSOLUTE_PATH = os.path.join(dirname, 'Car_data.csv')
-AUTO_MARKET_SHARE_DATA_ABSOLUTE_PATH = os.path.join(dirname, 'AutoMarketShare.csv')
-CARS_MONTHLY_SALES_DATA_ABSOLUTE_PATH = os.path.join(dirname, 'Car sales by month.csv')
-CARS_DATA_ABSOLUTE_PATH = os.path.join(dirname, 'autodata-cars.csv')
-CARS_YEARLY_SALES_ABSOLUTE_PATH = os.path.join(dirname, 'car_sales_year.csv')
-TOTAL_CAR_SALES_ABSOLUTE_PATH = os.path.join(dirname, 'Total_Car_Sales.csv')
-PRODUCTION_OF_VEHICLES_DATA_ABSOLUTE_PATH = os.path.join(dirname, 'productionOfVehicles.csv')
-TOP_COUNTRIES_DATA_ABSOLUTE_DATA = os.path.join(dirname, 'top_countries.csv')
-AUTOMAKERS_BY_EARNING_ABSOLUTE_PATH = os.path.join(dirname, 'automakers_by_earning.csv')
-AUTOMAKERS_BY_EMPLOYEES_ABSOLUTE_PATH = os.path.join(dirname, 'automakers_by_employees.csv')
-AUTOMAKERS_BY_MARKET_CAPITALIZATION_ABSOLUTE_PATH = os.path.join(dirname, 'automakers_by_market_capitalization.csv')
-AUTOMAKERS_BY_REVENUE_ABSOLUTE_PATH = os.path.join(dirname, 'automakers_by_revenue.csv')
+MPG_DATASET_ABSOLUTE_PATH = os.path.join(dirname, 'datasets/auto_mpg_final.csv')
+SALES_DATASET_ABSOLUTE_PATH = os.path.join(dirname, 'datasets/car_sales_data.csv')
+CARS_MONTHLY_SALES_DATA_ABSOLUTE_PATH = os.path.join(dirname, 'datasets/car_sales_by_month.csv')
+CARS_DATA_ABSOLUTE_PATH = os.path.join(dirname, 'datasets/autodata_cars.csv')
+CARS_YEARLY_SALES_ABSOLUTE_PATH = os.path.join(dirname, 'datasets/car_sales_year.csv')
+TOTAL_CAR_SALES_ABSOLUTE_PATH = os.path.join(dirname, 'datasets/total_car_sales.csv')
+PRODUCTION_OF_VEHICLES_DATA_ABSOLUTE_PATH = os.path.join(dirname, 'datasets/production_of_vehicles.csv')
+TOP_COUNTRIES_DATA_ABSOLUTE_DATA = os.path.join(dirname, 'datasets/top_countries.csv')
+AUTOMAKERS_BY_EARNING_ABSOLUTE_PATH = os.path.join(dirname, 'datasets/automakers_by_earning.csv')
+AUTOMAKERS_BY_EMPLOYEES_ABSOLUTE_PATH = os.path.join(dirname, 'datasets/automakers_by_employees.csv')
+AUTOMAKERS_BY_MARKET_CAPITALIZATION_ABSOLUTE_PATH = os.path.join(dirname, 'datasets/automakers_by_market_cap.csv')
+AUTOMAKERS_BY_REVENUE_ABSOLUTE_PATH = os.path.join(dirname, 'datasets/automakers_by_revenue.csv')
 
-# DF Test utility for Time series analyis
+# DF Test utility for Time series analysis
 
 # Processed Data
 # MPG_DATASET_PROCESSED_ABSOLUTE_PATH = os.path.join(dirname, 'autodata-mpg.csv')
@@ -362,7 +360,7 @@ def queryEight(request):
 def queryNine(request):
     if request.method == 'GET':
         df = pd.read_csv(TOTAL_CAR_SALES_ABSOLUTE_PATH)
-        jsonData = df.to_json(orient="columns");
+        jsonData = df.to_json(orient="columns")
         return JsonResponse(jsonData, safe=False)
     else:
         html = "<html><body>Only GET Method Allowed.</body></html>"
@@ -390,7 +388,7 @@ def queryTen(request, option):
             html = "<html><body>Incorrect URL</body></html>"
             return HttpResponse(html)
         df = df.round()
-        jsonData = df.to_json(orient="columns");
+        jsonData = df.to_json(orient="columns")
         return JsonResponse(jsonData, safe=False)
     else:
         html = "<html><body>Only GET Method Allowed.</body></html>"
