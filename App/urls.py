@@ -17,9 +17,7 @@ from .api_views.sales_variation_with_consumer_sentiment import sales_variation_w
 urlpatterns = [
     path('q1/<int:option>/', relation_between_price_and_mileage),
     path('q2/', top_five_expensive_brands),
-    # URL Format `http://127.0.0.1:8000/cars/${make}/${fuelType}/${transmission}/${orderBy}/${year}/${mileageKML}/${engineCC}/${power}/${seats}/${price}/${numberOfRecords}/`
-    path('cars/<slug:manufacturer>/<slug:fuelType>/<slug:transmission>/<slug:orderBy>/<int:year>/<int:mileageKML>/<int:engineCC>/<int:power>/<int:seats>/<int:price>/<int:numberOfRecords>/', filtererd_cars_auto_mpg_final_dataset),
-    path('q3/', sales_volume_comparison_of_top_10_brands),
+   path('q3/', sales_volume_comparison_of_top_10_brands),
     path('q4/', top_five_best_and_worst_performers),
     path('q5/<int:option>', top_five_countries_by_production_sales_exports),
     path('q6/<int:option>', customer_segments_by_cars_specifications),
@@ -29,4 +27,9 @@ urlpatterns = [
     path('q10/<int:option>/', top_automakers_by_earnings_revenue_market_cap_employees),
     path('forecast/<int:p>/<int:q>/<int:steps>/<int:nlags>/', forecast_sales),
     path('overview/', overview_sales_top_brands),
+    # URL Format `http://127.0.0.1:8000/cars/${make}/${fuelType}/${transmission}/${orderBy}/${year}/${mileageKML}/${engineCC}/${power}/${seats}/${price}/${numberOfRecords}/`
+    path(
+        'cars/<slug:manufacturer>/<slug:fuelType>/<slug:transmission>/<slug:orderBy>/<int:year>/<int:mileageKML>/<int:engineCC>/<int:power>/<int:seats>/<int:price>/<int:numberOfRecords>/',
+        filtererd_cars_auto_mpg_final_dataset),
+
 ]

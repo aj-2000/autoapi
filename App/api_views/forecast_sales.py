@@ -21,8 +21,16 @@ def test_stationarity(timeseries):
     return dfoutput
 
 
-@api_view(['POST'])
+@api_view(['POST', 'OPTIONS'])
 def forecast_sales(request, p=1, q=1, steps=5, nlags=9):
+    """
+            get:
+            A description of the get method on the custom action.
+
+            post:
+            A description of the post method on the custom action.
+
+    """
     if request.method == 'POST':
         df = pd.read_csv(request.data['file_url'])
         # acf, pacf value

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -19,7 +20,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&%1$k&dg)2)q0pw70-l7^pk1p5+j27m8!5)m*%fk$68z0q3e-='
+'''
+The Django secret key is used to provide cryptographic signing. 
+This key is mostly used to sign session cookies. 
+If one were to have this key, they would be able to modify the cookies sent by the application.
+'''
+# access secret key from .env file
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
