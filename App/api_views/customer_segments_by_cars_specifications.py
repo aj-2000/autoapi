@@ -2,7 +2,10 @@ import pandas as pd
 from django.http import HttpResponse, JsonResponse
 from ..datasets.datasets import CARS_MONTHLY_SALES_DATA_ABSOLUTE_PATH, MPG_DATASET_ABSOLUTE_PATH, CARS_DATA_ABSOLUTE_PATH, SALES_DATASET_ABSOLUTE_PATH
 
+from rest_framework.decorators import api_view
 
+
+@api_view(['GET'])
 def customer_segments_by_cars_specifications(request, option):
     if request.method == 'GET':
         if(option == 0):

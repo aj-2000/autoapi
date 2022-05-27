@@ -13,7 +13,6 @@ from .api_views.overview_sales_top_brands import overview_sales_top_brands
 from .api_views.growth_of_passenger_cars_production_in_india import growth_of_passenger_cars_production_in_india
 from .api_views.top_automakers_by_earnings_revenue_market_cap_employees import top_automakers_by_earnings_revenue_market_cap_employees
 from .api_views.sales_variation_with_consumer_sentiment import sales_variation_with_consumer_sentiment
-from .api_views.api_home import api_home
 
 urlpatterns = [
     path('q1/<int:option>/', relation_between_price_and_mileage),
@@ -30,5 +29,4 @@ urlpatterns = [
     path('q10/<int:option>/', top_automakers_by_earnings_revenue_market_cap_employees),
     path('forecast/<int:p>/<int:q>/<int:steps>/<int:nlags>/', forecast_sales),
     path('overview/', overview_sales_top_brands),
-    path('', api_home)
 ]

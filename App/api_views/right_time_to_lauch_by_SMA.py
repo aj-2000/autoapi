@@ -2,8 +2,9 @@ import pandas as pd
 import json
 from django.http import HttpResponse, JsonResponse
 from ..datasets.datasets import CARS_MONTHLY_SALES_DATA_ABSOLUTE_PATH
+from rest_framework.decorators import api_view
 
-
+@api_view(['GET'])
 # Right Time to Launch Car Analysis by SIMPLE MOVING AVERAGE
 def right_time_to_launch_by_SMA(request, option):
     if request.method == 'GET':

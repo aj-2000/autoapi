@@ -1,8 +1,9 @@
 import pandas as pd
 from django.http import HttpResponse, JsonResponse
 from ..datasets.datasets import SALES_DATASET_ABSOLUTE_PATH
+from rest_framework.decorators import api_view
 
-
+@api_view(['GET'])
 def top_five_best_and_worst_performers(request):
     if request.method == 'GET':
         sale = pd.read_csv(SALES_DATASET_ABSOLUTE_PATH)

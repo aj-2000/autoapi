@@ -21,7 +21,7 @@ def test_stationarity(timeseries):
     return dfoutput
 
 
-@api_view(['GET', 'POST'])
+@api_view(['POST'])
 def forecast_sales(request, p=1, q=1, steps=5, nlags=9):
     if request.method == 'POST':
         df = pd.read_csv(request.data['file_url'])

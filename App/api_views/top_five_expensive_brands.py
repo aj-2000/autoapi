@@ -1,8 +1,9 @@
 import pandas as pd
 from django.http import HttpResponse, JsonResponse
 from ..datasets.datasets import SALES_DATASET_ABSOLUTE_PATH
+from rest_framework.decorators import api_view
 
-
+@api_view(['GET'])
 # Top Expensive Brands
 def top_five_expensive_brands(request):
     if request.method == 'GET':

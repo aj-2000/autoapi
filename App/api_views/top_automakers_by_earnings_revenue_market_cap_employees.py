@@ -1,8 +1,9 @@
 import pandas as pd
 from django.http import HttpResponse, JsonResponse
 from ..datasets.datasets import AUTOMAKERS_BY_EARNING_ABSOLUTE_PATH, AUTOMAKERS_BY_REVENUE_ABSOLUTE_PATH, AUTOMAKERS_BY_MARKET_CAPITALIZATION_ABSOLUTE_PATH, AUTOMAKERS_BY_EMPLOYEES_ABSOLUTE_PATH
+from rest_framework.decorators import api_view
 
-
+@api_view(['GET'])
 def top_automakers_by_earnings_revenue_market_cap_employees(request, option):
     if request.method == 'GET':
         if(option == 0):

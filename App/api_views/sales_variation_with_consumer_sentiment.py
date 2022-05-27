@@ -1,8 +1,9 @@
 import pandas as pd
 from django.http import HttpResponse, JsonResponse
 from ..datasets.datasets import TOTAL_CAR_SALES_ABSOLUTE_PATH
+from rest_framework.decorators import api_view
 
-
+@api_view(['GET'])
 def sales_variation_with_consumer_sentiment(request):
     if request.method == 'GET':
         df = pd.read_csv(TOTAL_CAR_SALES_ABSOLUTE_PATH)

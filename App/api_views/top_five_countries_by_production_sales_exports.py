@@ -2,10 +2,11 @@ import pandas as pd
 from django.http import HttpResponse, JsonResponse
 
 from ..datasets.datasets import TOP_COUNTRIES_DATA_ABSOLUTE_DATA
+from rest_framework.decorators import api_view
 
 
+@api_view(['GET'])
 def top_five_countries_by_production_sales_exports(request, option):
-
     if request.method == 'GET':
         df = pd.read_csv(TOP_COUNTRIES_DATA_ABSOLUTE_DATA)
         if(option <= 2 and option >= 0):

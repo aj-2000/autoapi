@@ -1,11 +1,10 @@
 import pandas as pd
 import json
 from django.http import HttpResponse, JsonResponse
-
-
 from ..datasets.datasets import CARS_YEARLY_SALES_ABSOLUTE_PATH
+from rest_framework.decorators import api_view
 
-
+@api_view(['GET'])
 def overview_sales_top_brands(request):
     if request.method == 'GET':
         df_sales = pd.read_csv(CARS_YEARLY_SALES_ABSOLUTE_PATH)

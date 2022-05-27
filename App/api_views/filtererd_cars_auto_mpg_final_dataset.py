@@ -1,11 +1,15 @@
 import pandas as pd
 from django.http import HttpResponse, JsonResponse
 from ..datasets.datasets import MPG_DATASET_ABSOLUTE_PATH
+from rest_framework.decorators import api_view
 
-# API URL Format `http://127.0.0.1:8000/cars/${make}/${fuelType}/${transmission}/${orderBy}/${year}/${mileageKML}/${engineCC}/${power}/${seats}/${price}/${noOfRecords/`
 
+# API URL Format `http://127.0.0.1:8000/cars/${make}/${fuelType}/${transmission}/
+# ${orderBy}/${year}/${mileageKML}/${engineCC}/${power}/${seats}/${price}/${noOfRecords/`
 
-def filtererd_cars_auto_mpg_final_dataset(request, manufacturer, fuelType, transmission, orderBy, year, mileageKML, engineCC, power, seats, price, numberOfRecords):
+@api_view(['GET'])
+def filtererd_cars_auto_mpg_final_dataset(request, manufacturer, fuelType, transmission, orderBy, year, mileageKML,
+                                          engineCC, power, seats, price, numberOfRecords):
     if request.method == 'GET':
         autoMPG = pd.read_csv(MPG_DATASET_ABSOLUTE_PATH)
         # Adding AverageYearlySales Column to tell most popular car specification
@@ -22,18 +26,18 @@ def filtererd_cars_auto_mpg_final_dataset(request, manufacturer, fuelType, trans
         # autoMPG = autoMPG.drop_duplicates(subset=['Name'], keep='first', inplace=False, ignore_index=False)
         # using data set which already added random sales data for performance
         # Manufacturer Filter
-        if(manufacturer != 'All'):
+        if (manufacturer != 'All'):
             autoMPG = autoMPG[(autoMPG['Manufacturer'] == manufacturer)]
         # FuelType Filter
-        if(fuelType != 'All'):
+        if (fuelType != 'All'):
             autoMPG = autoMPG[(autoMPG['Fuel_Type'] == fuelType)]
         # Transmission Filter
         if (transmission != 'All'):
             autoMPG = autoMPG[(autoMPG['Transmission'] == transmission)]
         # OrderBy Filter
-        if(orderBy == 'Mileage'):
+        if (orderBy == 'Mileage'):
             autoMPG = autoMPG.sort_values(by=['Mileage Km/L'], ascending=False)
-        elif(orderBy == 'EngineCC'):
+        elif (orderBy == 'EngineCC'):
             autoMPG = autoMPG.sort_values(by=['Engine CC'], ascending=False)
         elif (orderBy != 'None'):
             autoMPG = autoMPG.sort_values(by=[orderBy], ascending=False)
@@ -41,22 +45,22 @@ def filtererd_cars_auto_mpg_final_dataset(request, manufacturer, fuelType, trans
         if (year != 0):
             autoMPG = autoMPG[(autoMPG['Year'] >= year)]
         # MileageKML >= filter
-        if(mileageKML != 0):
+        if (mileageKML != 0):
             autoMPG = autoMPG[(autoMPG['Mileage Km/L'] >= mileageKML)]
         # EngineCC >= filter
-        if(engineCC != 0):
+        if (engineCC != 0):
             autoMPG = autoMPG[(autoMPG['Engine CC'] >= engineCC)]
         # Power >= filter
-        if(power != 0):
+        if (power != 0):
             autoMPG = autoMPG[(autoMPG['Power'] >= power)]
         # Seats >= filter
         if (seats != 0):
             autoMPG = autoMPG[(autoMPG['Seats'] >= seats)]
         # Price >= filter
-        if(price != 0):
+        if (price != 0):
             autoMPG = autoMPG[(autoMPG['Price'] >= price)]
         # Price >= filter
-        if(numberOfRecords != 0):
+        if (numberOfRecords != 0):
             autoMPG = autoMPG.head(numberOfRecords)
         # converting pandas dataframe to json row wise
         jsonData = autoMPG.to_json(orient='records')
