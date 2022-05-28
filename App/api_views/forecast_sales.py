@@ -7,11 +7,10 @@ from statsmodels.tsa.stattools import adfuller
 from statsmodels.tsa.arima.model import ARIMA
 from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
 from rest_framework.decorators import api_view
+# from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 
-# DF Test utility for Time series analysis (Checks whether the series is stationary or not)
-
-
+# Dickey Fuller Test utility for Time series analysis (Checks whether the series is stationary or not)
 def test_stationarity(timeseries):
     dftest = adfuller(timeseries, autolag='AIC')
     dfoutput = pd.Series(dftest[0:4],
@@ -19,21 +18,12 @@ def test_stationarity(timeseries):
     for key, value in dftest[4].items():
         dfoutput['Critical Value (%s)' % key] = value
     return dfoutput
-
-
+# forecast api does not need any authorization token.
+# @csrf_exempt
 @api_view(['POST', 'OPTIONS'])
-def forecast_sales(request, p=1, q=1, steps=5, nlags=9):
-    """
-            get:
-            A description of the get method on the custom action.
-
-            post:
-            A description of the post method on the custom action.
-
-    """
+def forecast_sales(request, p=1, q=1, steps=5):
     if request.method == 'POST':
         df = pd.read_csv(request.data['file_url'])
-        # acf, pacf value
         # Selecting first two columns from uploaded dataset
         df = df.iloc[:, 0:2]
         # inferring datetime
@@ -42,9 +32,10 @@ def forecast_sales(request, p=1, q=1, steps=5, nlags=9):
         # rename first col as datetime and second as sales
         df.columns = ['datetime', 'sales']
         # # indexing by datetime column
-        indexedDataset = df.set_index(df['datetime'])
-        # # perform dickey-fuller test for indexedDataset
+        indexedDataset = df.set_index('datetime')
+        # # perform dickey-fuller test for indexedDataset(tell whether series is stationary or not)
         dfoutput = test_stationarity(indexedDataset['sales'])
+        # stationary series conditions using testing of Hypothesis
         isStationary = dfoutput['Test Statistic'] < dfoutput[
             'Critical Value (10%)'] and dfoutput['p-value'] <= 0.1
         # # indexedDataset_logScale
@@ -56,14 +47,10 @@ def forecast_sales(request, p=1, q=1, steps=5, nlags=9):
         dfoutputlog = test_stationarity(indexedDataset_logScale['sales'])
         isStationary = isStationary or (
             dfoutputlog['Test Statistic'] < dfoutputlog['Critical Value (10%)'] and dfoutputlog['p-value'] <= 0.1)
-        # ACF and PACF
-        # nlags depends on number of datapoints
-        # Can only compute partial correlations for lags up to 50% of the sample size. The requested nlags 20 must be < 10.(in this case)
         # shifting
         datasetLogDiffShifting = indexedDataset_logScale - indexedDataset_logScale.shift()
         datasetLogDiffShifting.dropna(inplace=True)
-        # lag_acf = acf(datasetLogDiffShifting['sales'], nlags=nlags)
-        # lag_pacf = pacf(datasetLogDiffShifting['sales'], nlags=nlags, method='ols')
+        # building arima model
         model = ARIMA(indexedDataset_logScale['sales'], order=(p, 1, q))
         results_ARIMA = model.fit()
         # p value -> partial autocorrelation, d value -> autocorrlation
@@ -71,19 +58,13 @@ def forecast_sales(request, p=1, q=1, steps=5, nlags=9):
         RSA_VALUE = sum(
             results_ARIMA.fittedvalues[1:]-datasetLogDiffShifting['sales'])**2
         RSA_VALUE = round(RSA_VALUE)
-        # # predictions + data transformation
-        predictions_ARIMA_diff = pd.Series(
-            results_ARIMA.fittedvalues, copy=True)
-        # # convert to culmulative sum
-        # predictions_ARIMA_diff_cumsum = predictions_ARIMA_diff.cumsum()
-        # # predictions + data transformation
-        # # predictions in log scale
-        # predictions_ARIMA_log = pd.Series(indexedDataset_logScale['sales'], index=indexedDataset_logScale.index)
-        # predictions_ARIMA_log = predictions_ARIMA_log.add(predictions_ARIMA_diff_cumsum, fill_value=0)
-        # # predictions in array format
+        # predictions + data transformation
         # # ignoring first record
+        # predicted values
         predictions = np.exp(results_ARIMA.predict())[1:]
+        # actual values
         actual = np.exp(indexedDataset['sales'])[1:]
+        # rounding values
         predictions = predictions.round()
         actual = actual.round()
         # # error calculation

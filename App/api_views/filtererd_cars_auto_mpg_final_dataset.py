@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view
 
 # API URL Format `http://127.0.0.1:8000/cars/${make}/${fuelType}/${transmission}/
 # ${orderBy}/${year}/${mileageKML}/${engineCC}/${power}/${seats}/${price}/${noOfRecords/`
-
+# responsible for providi
 @api_view(['GET'])
 def filtererd_cars_auto_mpg_final_dataset(request, manufacturer, fuelType, transmission, orderBy, year, mileageKML,
                                           engineCC, power, seats, price, numberOfRecords):

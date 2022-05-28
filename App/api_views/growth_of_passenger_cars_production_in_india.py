@@ -7,8 +7,10 @@ from rest_framework.decorators import api_view
 def growth_of_passenger_cars_production_in_india(request):
     if request.method == 'GET':
         df = pd.read_csv(PRODUCTION_OF_VEHICLES_DATA_ABSOLUTE_PATH)
+        # extracting only passenger cars production data
         df = df.loc[df['Indicators'] ==
                     'Production of Passenger Cars (PV)'].sort_values('Year')
+        # calculating percentage change in production from previous year
         pct_change_df = df['Value'].pct_change() * 100
         df = pd.concat([df, pct_change_df], axis=1)
         df.columns.values[3] = "Percent Change"

@@ -13,6 +13,7 @@ def right_time_to_launch_by_SMA(request, option):
                            }, inplace=True)
         df = df.drop(labels=[0], axis=0, index=None, columns=None,
                      level=None, inplace=False, errors='raise')
+        # calculating average sales of 2019 and 2020 (if data of more years provided, also include them.)
         df[df.columns[2:]] = df[df.columns[2:]].apply(pd.to_numeric)
         df['Jan'] = df['2019'] * .5 + df['2020'] * .5
         df['Feb'] = df['2019.1'] * .5 + df['2020.1'] * .5
@@ -26,6 +27,7 @@ def right_time_to_launch_by_SMA(request, option):
         df['Oct'] = df['2019.8']
         df['Nov'] = df['2019.8']
         df['Dec'] = df['2019.8']
+        # ensuring data is in int format
         convert_dict = {'Jan': int,
                         'Feb': int,
                         'Mar': int,
@@ -38,6 +40,7 @@ def right_time_to_launch_by_SMA(request, option):
                         }
 
         df = df.astype(convert_dict)
+        # taking month wise sum
         jan = df.groupby(by=['Segment'])['Jan'].sum()
         feb = df.groupby(by=['Segment'])['Feb'].sum()
         mar = df.groupby(by=['Segment'])['Mar'].sum()
@@ -53,17 +56,18 @@ def right_time_to_launch_by_SMA(request, option):
         frames = [jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec]
         result = pd.concat(frames, axis=1)
         result = result.T
-
+        # calculating moving average
         result['EconomySMA'] = result['Economy'].rolling(2).mean()
         result['LuxurySMA'] = result['Luxury'].rolling(2).mean()
         result['MidRangeSMA'] = result['Mid-Range'].rolling(2).mean()
         result['UltraLuxurySMA'] = result['Ultra Luxury'].rolling(2).mean()
+        # calculing diff from MA of data values
         result['EconomyDiff'] = result['Economy']-result['EconomySMA']
         result['LuxuryDiff'] = result['Luxury']-result['LuxurySMA']
         result['MidRangeDiff'] = result['Mid-Range']-result['MidRangeSMA']
         result['UltraLuxuryDiff'] = result['Ultra Luxury'] - \
             result['UltraLuxurySMA']
-
+        # predicting months
         bestUltraLuxury = result.loc[result['UltraLuxurySMA'] < result['Ultra Luxury']].sort_values(
             by='UltraLuxuryDiff', ascending=False).head(3).iloc[0:3, 0:0]
         bestMidRange = result.loc[result['MidRangeSMA'] < result['Mid-Range']].sort_values(by='MidRangeDiff',
@@ -74,18 +78,20 @@ def right_time_to_launch_by_SMA(request, option):
             0:3, 0:0]
         bestLuxury = result.loc[result['LuxurySMA'] < result['Luxury']].sort_values(by='LuxuryDiff',
                                                                                     ascending=False).head(3).iloc[0:3,
-                                                                                                                  0:0]
+                                                                                                                         0:0]
         framesBestMonths = [bestEconomy, bestLuxury,
                             bestMidRange, bestUltraLuxury]
-        print(framesBestMonths)
+        # concating prediction data
         bestMonths = pd.concat(framesBestMonths, axis=0)
+        # converting data frame to python list
         bestMonthsList = list(bestMonths.index.values)
-        print(bestMonthsList)
         result = result.T
         result = result.round(0)
         if(option == 1):
+            # sending chart data
             jsonData = result.to_json(orient='records')
         else:
+            # sending predictions
             jsonData = json.dumps(bestMonthsList)
 
         return JsonResponse(jsonData, safe=False)

@@ -1,3 +1,4 @@
+# includes absolute path of all datasets
 import os
 dirname = os.path.dirname(__file__)
 MPG_DATASET_ABSOLUTE_PATH = os.path.join(dirname, 'auto_mpg_final.csv')
