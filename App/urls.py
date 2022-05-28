@@ -25,7 +25,7 @@ urlpatterns = [
     path('q8/', growth_of_passenger_cars_production_in_india),
     path('q9/', sales_variation_with_consumer_sentiment),
     path('q10/<int:option>/', top_automakers_by_earnings_revenue_market_cap_employees),
-    path('forecast/<int:p>/<int:q>/<int:steps>/', forecast_sales),
+    path('forecast/<int:p>/<int:q>/<int:steps>/<int:option>', forecast_sales),
     path('overview/', overview_sales_top_brands),
     path('cars/<slug:manufacturer>/<slug:fuelType>/<slug:transmission>/<slug:orderBy>/<int:year>/<int:mileageKML>/<int:engineCC>/<int:power>/<int:seats>/<int:price>/<int:numberOfRecords>/',
          filtererd_cars_auto_mpg_final_dataset),
