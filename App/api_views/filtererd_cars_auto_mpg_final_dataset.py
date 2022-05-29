@@ -12,6 +12,8 @@ def filtererd_cars_auto_mpg_final_dataset(request, manufacturer, fuelType, trans
                                           engineCC, power, seats, price, numberOfRecords):
     if request.method == 'GET':
         autoMPG = pd.read_csv(MPG_DATASET_ABSOLUTE_PATH)
+        # removing records having null values
+        autoMPG = autoMPG.dropna();
         # Adding AverageYearlySales Column to tell most popular car specification
         # Interquantile range calculated from sales data set to make random sales more relevant
         # iqr1 = df.quantile(0.25)
