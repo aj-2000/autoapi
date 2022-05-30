@@ -34,10 +34,6 @@ A REST api written in Django for Microsoft Engage 2022 Data Analysis Project.
             virtualenv  venv -p python3
             source venv/bin/activate
         ```
-        WINDOWS:
-        ```bash
-            virtualenv  venv -p python3
-            venv\Scripts\activate
         
     3. Install the dependencies needed to run the app:
         ```bash
