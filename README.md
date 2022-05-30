@@ -1,6 +1,8 @@
 # autoapi
 A REST api written in Django for Microsoft Engage 2022 Data Analysis Project.
-> [AUTOAPI Service & Docs](https://engage-autoapi.herokuapp.com)
+> [auto-api Playground & Service](https://engage-autoapi.herokuapp.com)
+
+>[API Docs](https://github.com/aj-2000/autoapi#api-documentation)
 
 ## Technologies used
 * [Django](https://www.djangoproject.com/): The web framework for perfectionists with deadlines (Django builds better web apps with less code).
