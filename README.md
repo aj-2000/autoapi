@@ -78,58 +78,13 @@ GET /cars/{manufacturer}/{fuelType}/{transmission}/{orderBy}/{year}/{mileageKML}
 
 **Auth required** : NO
 
-**Permissions required** : None
 
-**Data constraints** : `{}`
-
-## Success Response
-
-**Condition** : No records found.
-
-**Code** : `200 OK`
-
-**Content** : `{[]}`
-
-### OR
-
-**Condition** : records found.
-#### Example
-```
-GET /overview/
-```
-**Code** : `200 OK`
-
-**Content** :
-
-```json
-[
-    {
-  "Unnamed: 0.1": 428,
-  "Unnamed: 0": 431,
-  "Name": "Maruti Baleno Alpha Automatic",
-  "Manufacturer": "Maruti",
-  "Location": "Coimbatore",
-  "Year": 2018,
-  "Kilometers_Driven": 12831,
-  "Fuel_Type": "Petrol",
-  "Transmission": "Automatic",
-  "Owner_Type": "First",
-  "Engine CC": 1197,
-  "Power": 83.1,
-  "Seats": 5,
-  "Mileage Km/L": 21.4,
-  "Price": 9.89,
-  "AverageYearlySales": 498280
-}
-]
-```
-
-## 2. Overview
-Responsible for funtioning of data analyzer.
+## 2. OVERVIEW
+Responsible for Dashboard Overview section.
 
 **URL** : 
 ```url
-/overview/
+/overview
 ```
 
 **Method** : `GET`
@@ -141,8 +96,6 @@ Responsible for funtioning of data analyzer.
 **Data constraints** : `{}`
 
 ## Success Response
-
-
 
 **Code** : `200 OK`
 
@@ -156,10 +109,8 @@ Responsible for funtioning of data analyzer.
     }
 ```
 
-# Forecast
-
-Create an Account for the authenticated User if an Account for that User does
-not already exist. Each User can only have one Account.
+# 3. FORECAST
+Responsible for Sales forecast  feature.
 
 **URL** : `POST /forecast/{p}/{q}/{steps}/{option}
 `
@@ -185,7 +136,7 @@ Provide CSV dateset static file URL.
 
 ```json
 {
-    "file_rul": "CSV FILE STATIC URL"
+    "file_url": "CSV FILE STATIC URL"
 }
 ```
 
@@ -196,3 +147,171 @@ Provide CSV dateset static file URL.
     "file_url": "https://raw.githubusercontent.com/aj-2000/autoapi/main/App/datasets/demo_sales_dataset.csv"
 }
 ```
+
+
+## 4. Price and Mileage Data 
+Responsible for Price vs Relation analysis Chart.
+
+**URL** : 
+```
+GET /q1/{option}
+```
+
+**Method** : `GET`
+
+**Auth required** : NO
+
+**Permissions required** : None
+
+| Parameter | Description                 |
+|:---------:|:---------------------------:|
+| option    | (1: Automatic), (2: Manual) |
+
+## 5. Top 5 Expensive Brands Data
+Responsible for Top 5 expensive brands table.
+**URL** : 
+```
+GET /q2
+```
+
+**Method** : `GET`
+
+**Auth required** : NO
+
+**Permissions required** : None
+
+
+## 6. 2019 And 2020 Sales Data Of Top 10 Brands
+Responsible for Price vs Relation analysis.
+
+**URL** : 
+```
+GET /q3
+```
+
+**Method** : `GET`
+
+**Auth required** : NO
+
+**Permissions required** : None
+
+
+## 7. Sales Percentage Data
+Responsible for Brand Performance Analysis
+
+**URL** : 
+```
+GET /q4
+```
+
+**Method** : `GET`
+
+**Auth required** : NO
+
+**Permissions required** : None
+
+
+## 8. Top Countries Data
+Responible for Top Countries Data Pie Chart.
+
+**URL** : 
+```
+GET /q5/{option}
+```
+
+**Method** : `GET`
+
+**Auth required** : NO
+
+**Permissions required** : None
+
+| Parameter |                    Description                     |
+|:---------:|:--------------------------------------------------:|
+| option    | (0: by production), (1: by sales), (2: by exports) |
+
+
+## 9. Customer Segments Data
+Responsible for Customer Segments Pie Chart.
+
+**URL** : 
+```
+GET /q6/{option}
+```
+
+**Method** : `GET`
+
+**Auth required** : NO
+
+**Permissions required** : None
+
+| Parameter |                                             Description                                      |
+|:---------:|:--------------------------------------------------------------------------------------------:|
+| option    | (0: Drive Train), (1: Transmission), (2: Class), (3: Brands), (4: Fuel Type), (5: By BodyTpe)|
+## 10. Right Time To Launch Analysis Data
+Responsible for Right Time to Launch Analysis Data
+
+**URL** : 
+```url
+GET /q7/{option}
+```
+
+**Method** : `GET`
+
+**Auth required** : NO
+
+**Permissions required** : None
+
+
+| Parameter |               Description                |
+|:---------:|:----------------------------------------:|
+| option    | (1: Analysis Data), (2: Prediction Data) |
+
+## 11. Passengers Car's Production Data 
+Responsible for Growth of passengers cars produced in India.
+
+**URL** : 
+```url
+GET /q8
+```
+
+**Method** : `GET`
+
+**Auth required** : NO
+
+**Permissions required** : None
+
+
+## 12. Consumer Sentiment And Sales Data
+Responsible for Consumer Sentiment vs Sales Analysis Chart.
+
+**URL** : 
+```url
+GET /q9
+```
+
+**Method** : `GET`
+
+**Auth required** : NO
+
+**Permissions required** : None
+
+
+## 13. Top Automakers Data
+Responsible for Top Automakers Pie chart Data
+
+**URL** : 
+```url
+GET /q10/{option}
+```
+
+**Method** : `GET`
+
+**Auth required** : NO
+
+**Permissions required** : None
+
+
+| Parameter |                                   Description                                   |
+|:---------:|:-------------------------------------------------------------------------------:|
+| option    | (0: by earnings), (1: by revenue), (2: by market cap.), (2: by employees count) |
+

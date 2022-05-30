@@ -90,9 +90,11 @@ def right_time_to_launch_by_SMA(request, option):
         if(option == 1):
             # sending chart data
             jsonData = result.to_json(orient='records')
-        else:
+        elif(option == 2):
             # sending predictions
             jsonData = json.dumps(bestMonthsList)
+        else:
+            return  HttpResponse("<h1>Wrong URL</h1>")
 
         return JsonResponse(jsonData, safe=False)
     else:
