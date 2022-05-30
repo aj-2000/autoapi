@@ -71,7 +71,7 @@ Responsible for funtioning of data analyzer.
 
 **URL** : 
 ```url
-/cars/{manufacturer}/{fuelType}/{transmission}/{orderBy}/{year}/{mileageKML}/{engineCC}/{power}/{seats}/{price}/{numberOfRecords}/
+GET /cars/{manufacturer}/{fuelType}/{transmission}/{orderBy}/{year}/{mileageKML}/{engineCC}/{power}/{seats}/{price}/{numberOfRecords}/
 ```
 
 **Method** : `GET`
@@ -82,7 +82,7 @@ Responsible for funtioning of data analyzer.
 
 **Data constraints** : `{}`
 
-## Success Responses
+## Success Response
 
 **Condition** : No records found.
 
@@ -95,7 +95,7 @@ Responsible for funtioning of data analyzer.
 **Condition** : records found.
 #### Example
 ```
-/cars/Maruti/Petrol/Automatic/Price/2018/0/0/0/0/5/1/
+GET /overview/
 ```
 **Code** : `200 OK`
 
@@ -122,4 +122,77 @@ Responsible for funtioning of data analyzer.
   "AverageYearlySales": 498280
 }
 ]
+```
+
+## 2. Overview
+Responsible for funtioning of data analyzer.
+
+**URL** : 
+```url
+/overview/
+```
+
+**Method** : `GET`
+
+**Auth required** : NO
+
+**Permissions required** : None
+
+**Data constraints** : `{}`
+
+## Success Response
+
+
+
+**Code** : `200 OK`
+
+**Content** :
+
+```json
+    {
+      "sales": "{\"2016\":159828.41,\"2017\":166812.66,\"2018\":166025.13,\"2019\":171464.76,\"2020\":161056.21,\"2021\":167303.02,\"January_2022\":34149.76,\"February_2022\":32607.59,\"March_2022\":31169.34,\"April_2022\":33017.0,\"May_2022\":33382.22,\"June_2022\":33658.23,\"2022\":197984.14}",
+      "top_brand_of_year": "Maruti Suzuki",
+      "top_brand_of_month": "Fiat"
+    }
+```
+
+# Forecast
+
+Create an Account for the authenticated User if an Account for that User does
+not already exist. Each User can only have one Account.
+
+**URL** : `POST /forecast/{p}/{q}/{steps}/{option}
+`
+
+
+| Parameter | Description                                                                   |
+|:---------:|:-----------------------------------------------------------------------------:|
+| p         | P Value                                                                       |
+| q         | Q Value                                                                       |
+| steps     | Number of forecasts                                                           |
+| option    | (1:Model Accuracy Chart Data), (2 : Model-Error Details), (3 : Forecast Data) |
+
+
+**Method** : `POST`
+
+**Auth required** : YES
+
+**Permissions required** : None
+
+**Data constraints**
+
+Provide CSV dateset static file URL.
+
+```json
+{
+    "file_rul": "CSV FILE STATIC URL"
+}
+```
+
+**Data example** All fields must be sent.
+
+```json
+{
+    "file_url": "https://raw.githubusercontent.com/aj-2000/autoapi/main/App/datasets/demo_sales_dataset.csv"
+}
 ```
