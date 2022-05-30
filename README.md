@@ -78,6 +78,20 @@ GET /cars/{manufacturer}/{fuelType}/{transmission}/{orderBy}/{year}/{mileageKML}
 
 **Auth required** : NO
 
+| Parameter       | Description                                     |
+|-----------------|-------------------------------------------------|
+| manufacturer    | Car's Manufacturer Name                         |
+| fuelType        | Car's Fuel Type                                 |
+| transmission    | Car's Transmission Type                         |
+| orderBy         | Sort in Descending Order by {orderBy} column    |
+| year            | Launch year                                     |
+| mileageKML      | Cars with Mileage greater than {mileageKML}     |
+| engineCC        | Cars with Engine Volume greater than {engineCC} |
+| power           | Cars with Power greater than {power}            |
+| seats           | Cars with Seats greater than {seats}            |
+| price           | Cars with Price greater than {mileageKML}       |
+| numberOfRecords | Max Number of Cars to be fetched.               |
+
 
 ## 2. OVERVIEW
 Responsible for Dashboard Overview section.
@@ -313,5 +327,5 @@ GET /q10/{option}
 
 | Parameter |                                   Description                                   |
 |:---------:|:-------------------------------------------------------------------------------:|
-| option    | (0: by earnings), (1: by revenue), (2: by market cap.), (2: by employees count) |
+| option    | (0: by earnings), (1: by revenue), (2: by market cap.), (3: by employees count) |
 
