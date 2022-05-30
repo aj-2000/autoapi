@@ -61,13 +61,13 @@ A REST api written in Django for Microsoft Engage 2022 Data Analysis Project.
 * #### Save your own Django SECRET KEY to .env file
     ```
     Inside /autoapi/.env
-    SECRET KEY = "YOUR SECRET KEY"
+    SECRET_KEY = "YOUR SECRET KEY"
     ```
 
 # API documentation
 
 ## 1. CARS
-Responsible for funtioning of data analyzer.
+Responsible for functioning of data analyzer.
 
 **URL** : 
 ```url
@@ -107,21 +107,6 @@ Responsible for Dashboard Overview section.
 
 **Permissions required** : None
 
-**Data constraints** : `{}`
-
-## Success Response
-
-**Code** : `200 OK`
-
-**Content** :
-
-```json
-    {
-      "sales": "{\"2016\":159828.41,\"2017\":166812.66,\"2018\":166025.13,\"2019\":171464.76,\"2020\":161056.21,\"2021\":167303.02,\"January_2022\":34149.76,\"February_2022\":32607.59,\"March_2022\":31169.34,\"April_2022\":33017.0,\"May_2022\":33382.22,\"June_2022\":33658.23,\"2022\":197984.14}",
-      "top_brand_of_year": "Maruti Suzuki",
-      "top_brand_of_month": "Fiat"
-    }
-```
 
 # 3. FORECAST
 Responsible for Sales forecast  feature.
