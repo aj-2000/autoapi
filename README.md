@@ -65,7 +65,7 @@ A REST api written in Django for Microsoft Engage 2022 Data Analysis Project.
     Inside /autoapi/.env
     SECRET_KEY = "YOUR SECRET KEY"
     ```
-
+You can use [Djecrety](https://djecrety.ir/) to generate Strong Django Secret Key or use any string.
 # API documentation
 
 ## 1. CARS
