@@ -58,6 +58,11 @@ A REST api written in Django for Microsoft Engage 2022 Data Analysis Project.
     ```
         http://localhost:8000/
     ```
+* #### Save your own Django SECRET KEY to .env file
+    ```
+    Inside /autoapi/.env
+    SECRET KEY = "YOUR SECRET KEY"
+    ```
 
 # API documentation
 
