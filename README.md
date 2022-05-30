@@ -110,7 +110,7 @@ Responsible for Dashboard Overview section.
 **Permissions required** : None
 
 
-# 3. FORECAST
+## 3. FORECAST
 Responsible for Sales forecast  feature.
 
 **URL** : `POST /forecast/{p}/{q}/{steps}/{option}
